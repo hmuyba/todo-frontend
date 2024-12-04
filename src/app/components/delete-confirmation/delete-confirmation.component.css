@@ -1,0 +1,25 @@
+/* General Button Style */
+.mat-mdc-button:not(:disabled) {
+    color: #ffffff !important;
+    background-color: #b3d9ff !important; /* Default background for both buttons */
+    margin: 0 8px;
+}
+
+/* Specific Style for Delete Button */
+.mat-mdc-button.mat-warn:not(:disabled) {
+    background-color: #ffb3b3 !important; /* Specific background for warn (Delete) button */
+}
+
+/* Hover State for Cancel Button */
+.mat-mdc-button:not(:disabled):hover {
+    background-color: #80bfff !important; /* Hover color for Cancel button */
+}
+
+/* Hover State for Delete Button */
+.mat-mdc-button.mat-warn:not(:disabled):hover {
+    background-color: #ff9999 !important; /* Hover color for Delete button */
+}
+
+.mat-mdc-dialog-actions {
+    justify-content: center;
+}

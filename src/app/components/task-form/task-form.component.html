@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit Task' : 'Create Task' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title">
+      <mat-error *ngIf="taskForm.get('title')?.hasError('required')">
+        Title is required
+      </mat-error>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <input matInput formControlName="description">
+      <mat-error *ngIf="taskForm.get('description')?.hasError('required')">
+        Description is required
+      </mat-error>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="TO DO">To Do</mat-option>
+        <mat-option value="IN PROGRESS">In Progress</mat-option>
+        <mat-option value="DONE">Done</mat-option>
+      </mat-select>
+      <mat-error *ngIf="taskForm.get('status')?.hasError('required')">
+        Status is required
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button color="primary" (click)="onSubmit()">
+    {{ isEditMode ? 'Update' : 'Create' }}
+  </button>
+</mat-dialog-actions>

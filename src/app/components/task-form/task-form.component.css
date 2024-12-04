@@ -1,0 +1,75 @@
+/* Background color for the form */
+mat-dialog-content {
+    background-color: #ffffff; /* Match the task column background */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Add shadow for visual separation */
+}
+
+/* Style for form fields */
+mat-form-field {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+/* Form field appearance */
+mat-form-field.mat-form-field-appearance-fill {
+    background-color: #f4f5f7; /* Light grey background for form fields */
+    border-radius: 4px;
+    padding: 5px; /* Adjust padding for form fields */
+}
+
+/* Label and input colors */
+mat-form-field mat-label {
+    color: #495057; /* Match the task column header color */
+}
+
+mat-form-field mat-input-element,
+mat-form-field mat-select {
+    color: #495057; /* Text color for inputs */
+}
+
+/* Error message styling */
+mat-error {
+    color: #ffb6c1; /* Soft red for error messages */
+}
+
+/* Dialog actions section */
+mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    background-color: #f4f5f7; /* Light grey background for the actions area */
+    border-top: 1px solid #e0e0e0; /* Border at the top for separation */
+}
+
+/* Action buttons */
+mat-dialog-actions button {
+    margin-left: 10px;
+    border-radius: 20px; /* Circular buttons */
+    padding: 10px 20px; /* Adjust padding for buttons */
+    color: #ffffff; /* Text color for buttons */
+    min-width: 40px; /* Ensure button has a minimum width */
+    height: 40px; /* Ensure button has a minimum height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Primary button color */
+mat-dialog-actions button[color="primary"] {
+    background-color: #b3d9ff !important; /* Light Blue */
+}
+
+mat-dialog-actions button[color="primary"]:hover {
+    background-color: #80bfff !important; /* Slightly Darker Blue on hover */
+}
+
+/* Cancel button styling */
+mat-dialog-actions button:not([color="primary"]) {
+    background-color: #ffb3b3 !important; /* Light Pink */
+}
+
+mat-dialog-actions button:not([color="primary"]):hover {
+    background-color: #ff9999 !important; /* Slightly Darker Pink on hover */
+}
