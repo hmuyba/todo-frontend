@@ -14,22 +14,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { DeleteConfirmationComponent } from '../delete-confirmation/delete-confirmation.component';
 
 @Component({
-  selector: 'app-task-form',
-  standalone: true,
-  imports: [
-    SharedModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    HttpClientModule,
-    CommonModule,
-    MatDialogModule,
-    MatButtonModule,
-    FormsModule
-],
-  templateUrl: './task-form.component.html',
-  styleUrls: ['./task-form.component.css']
+    selector: 'app-task-form',
+    imports: [
+        SharedModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        HttpClientModule,
+        CommonModule,
+        MatDialogModule,
+        MatButtonModule,
+        FormsModule
+    ],
+    templateUrl: './task-form.component.html',
+    styleUrls: ['./task-form.component.css']
 })
 export class TaskFormComponent implements OnInit {
   taskForm: FormGroup;

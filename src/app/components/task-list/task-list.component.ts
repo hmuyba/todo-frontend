@@ -15,23 +15,22 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-task-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatCardModule,
-    DragDropModule,
-    ReactiveFormsModule,
-    FormsModule
-],
-  templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.css']
+    selector: 'app-task-list',
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        MatCardModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatCardModule,
+        DragDropModule,
+        ReactiveFormsModule,
+        FormsModule
+    ],
+    templateUrl: './task-list.component.html',
+    styleUrls: ['./task-list.component.css']
 })
 export class TaskListComponent implements OnInit {
   todoTasks: Task[] = [];

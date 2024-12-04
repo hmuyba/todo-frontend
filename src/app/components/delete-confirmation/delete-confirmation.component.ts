@@ -10,22 +10,21 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 @Component({
-  selector: 'app-delete-confirmation',
-  standalone: true,
-  imports: [
-    SharedModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatSelectModule,
-    HttpClientModule,
-    CommonModule,
-    MatDialogModule,
-    MatButtonModule,
-    FormsModule
-],
-  templateUrl: './delete-confirmation.component.html',
-  styleUrls: ['./delete-confirmation.component.css']
+    selector: 'app-delete-confirmation',
+    imports: [
+        SharedModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatSelectModule,
+        HttpClientModule,
+        CommonModule,
+        MatDialogModule,
+        MatButtonModule,
+        FormsModule
+    ],
+    templateUrl: './delete-confirmation.component.html',
+    styleUrls: ['./delete-confirmation.component.css']
 })
 export class DeleteConfirmationComponent {
   constructor(private dialogRef: MatDialogRef<DeleteConfirmationComponent>) {}
