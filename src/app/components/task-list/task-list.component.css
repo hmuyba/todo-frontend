@@ -1,185 +1,126 @@
 /* Task Columns Container */
 .task-columns-container {
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
     background-color: #f4f5f7;
     border-radius: 8px;
-    padding: 20px;
+    padding: 15px;
     box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
 }
 
 /* Task Columns */
 .task-column {
-    display: inline-block;
-    vertical-align: top;
-    width: calc(30% - 20px);
-    margin: 0 10px;
+    flex: 1;
+    min-width: 0;
     background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px;
+    padding: 10px;
     box-sizing: border-box;
 }
 
 /* Task Column Header */
 .task-column h3 {
-    text-align: center;
-    font-size: 18px;
+    font-size: clamp(14px, 2vw, 18px);
     color: #495057;
     margin-bottom: 15px;
     border-bottom: 3px solid #6c757d;
     padding-bottom: 8px;
-    cursor: default; /* Prevents text selection */
-    user-select: none; /* Prevents text selection */
+    text-align: center;
+    user-select: none;
 }
 
 /* Task List */
 .task-list {
-    min-height: 200px; /* Ensures enough space for dragging even when empty */
+    min-height: 200px;
     background-color: #f4f4f4;
     border: 1px solid #ddd;
-    padding: 10px;
+    padding: 8px;
     border-radius: 4px;
     box-sizing: border-box;
-    margin-bottom: 15px; /* Space between task list and the next column */
 }
 
-/* Task Card Hover Effect */
+/* Task Card */
+.task-card {
+    margin-bottom: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+
 .task-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    cursor: pointer; /* Change cursor to hand when hovering */
-}
-
-/* Responsive Task Columns */
-@media (max-width: 1024px) {
-    .task-column {
-        width: calc(33% - 16px);
-        margin: 0 8px;
-    }
-
-    .task-column h3 {
-        font-size: 16px;
-    }
-
-    .task-card mat-card {
-        max-width: 100%;
-        padding: 8px;
-        height: auto;
-    }
-
-    .task-card mat-card-content {
-        font-size: 14px;
-    }
-
-    .task-card mat-card-actions {
-        padding: 8px 10px;
-        justify-content: space-between;
-        flex-direction: row; /* Side by side buttons on medium screens */
-    }
-
-    .task-card mat-card-actions button {
-        width: 48%; /* Buttons take up less space side by side */
-    }
-}
-
-@media (max-width: 768px) {
-    .task-column {
-        width: calc(33% - 10px);
-        margin: 0 5px;
-    }
-
-    .task-column h3 {
-        font-size: 14px;
-    }
-
-    .task-card mat-card {
-        max-width: 100%;
-        padding: 5px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between; /* Space out content evenly */
-    }
-
-    .task-card mat-card-title {
-        font-size: 16px;
-    }
-
-    .task-card mat-card-content {
-        font-size: 13px;
-        flex-grow: 1;
-    }
-
-    .task-card mat-card-actions {
-        padding: 5px 8px;
-        flex-direction: column; /* Stack buttons vertically */
-        align-items: center;
-    }
-
-    .task-card mat-card-actions button {
-        margin-bottom: 5px;
-        width: 80%; /* Smaller buttons */
-        max-width: 150px;
-    }
-
-    .task-card mat-card-actions button:last-child {
-        margin-bottom: 0;
-    }
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
 }
 
 /* Card Header */
 .task-card mat-card-header {
     background-color: #add8e6;
     color: #ffffff;
-    padding: 10px;
-    margin: 0; /* Remove margin */
-    border-radius: 8px 8px 0 0; /* Rounded corners only at the top */
-    width: 100%; /* Ensure full width */
-    box-sizing: border-box; /* Include padding in width calculation */
+    padding: 8px;
+    border-radius: 8px 8px 0 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Adjustments for the card header content */
 .task-card mat-card-header .mat-card-header-text {
-    margin: 0; /* Remove any margin around the header text */
-    padding: 0; /* Remove any padding around the header text */
-    width: 100%; /* Ensure the text takes up the full width */
-    box-sizing: border-box; /* Ensure padding is included in width calculation */
+    margin: 0;
+    width: 100%;
 }
 
 /* Card Title */
 .task-card mat-card-title {
-    font-size: 17px;
+    font-size: clamp(14px, 1.5vw, 17px);
     font-weight: 600;
     margin: 0;
+    word-wrap: break-word;
 }
 
 /* Card Content */
 .task-card mat-card-content {
-    font-size: 15px;
+    font-size: clamp(12px, 1.2vw, 15px);
     color: #495057;
-    padding: 10px;
+    padding: 8px;
+    word-wrap: break-word;
     flex-grow: 1;
 }
 
 /* Card Actions */
 .task-card mat-card-actions {
     display: flex;
-    justify-content: space-between; /* Buttons side by side */
-    padding: 10px 20px;
+    justify-content: space-around;
+    padding: 8px;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
-/* Button Styles for Task Action Buttons */
-.task-action-button.mat-mdc-raised-button.mat-primary {
+/* Button Base Styles */
+.task-action-button.mat-mdc-raised-button,
+.create-task-button.mat-mdc-raised-button {
+    min-width: 64px;
+    padding: 4px 8px;
+    font-size: clamp(12px, 1vw, 14px);
+}
+
+/* Primary Button Styles */
+.task-action-button.mat-mdc-raised-button.mat-primary,
+.create-task-button.mat-mdc-raised-button.mat-primary {
     background-color: #b3d9ff !important;
     color: #ffffff !important;
 }
 
+/* Warning Button Styles */
 .task-action-button.mat-mdc-raised-button.mat-warn {
     background-color: #ffb3b3 !important;
     color: #ffffff !important;
 }
 
-/* Button Hover States for Task Action Buttons */
-.task-action-button.mat-mdc-raised-button.mat-primary:hover {
+/* Button Hover States */
+.task-action-button.mat-mdc-raised-button.mat-primary:hover,
+.create-task-button.mat-mdc-raised-button.mat-primary:hover {
     background-color: #80bfff !important;
 }
 
@@ -187,18 +128,48 @@
     background-color: #ff9999 !important;
 }
 
-/* Button Styles for Create Task Button */
+/* Create Task Button Specific */
 .create-task-button.mat-mdc-raised-button.mat-primary {
-    background-color: #b3d9ff !important;
-    color: #ffffff !important;
-    margin-left: 10px; /* Adds margin to the left */
+    margin-left: 10px;
 }
 
-/* Button Hover States for Create Task Button */
-.create-task-button.mat-mdc-raised-button.mat-primary:hover {
-    background-color: #80bfff !important;
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .task-columns-container {
+        padding: 8px;
+        gap: 5px;
+    }
+
+    .task-column {
+        padding: 5px;
+    }
+
+    .task-list {
+        padding: 5px;
+    }
+
+    .task-card mat-card-actions {
+        padding: 5px;
+    }
+    
+    .create-task-button.mat-mdc-raised-button.mat-primary {
+        margin-left: 5px;
+    }
 }
 
-.task-card{
-    text-align: center;
+@media (max-width: 480px) {
+    .task-card mat-card-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .task-action-button.mat-mdc-raised-button,
+    .create-task-button.mat-mdc-raised-button {
+        width: 100%;
+        margin: 2px 0;
+    }
+
+    .create-task-button.mat-mdc-raised-button.mat-primary {
+        margin-left: 0;
+    }
 }
