@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { Task } from '../models/task.model';
 
 @Injectable({
@@ -16,17 +16,38 @@ export class TaskService {
     this.refreshTasks();
   }
 
+  private updateLocalState(tasks: Task[]) {
+    this.tasksSubject.next([...tasks]);
+  }
+
   refreshTasks() {
     return this.http.get<Task[]>(this.apiUrl).pipe(
-      tap(tasks => this.tasksSubject.next(tasks))
+      tap(tasks => this.updateLocalState(tasks))
     ).subscribe();
   }
 
   getTasks(): Observable<Task[]> {
-    // Refresh tasks when getting them
-    this.refreshTasks();
-    return this.tasks$;
+    return this.http.get<Task[]>(this.apiUrl).pipe(
+      tap(tasks => this.updateLocalState(tasks))
+    );
   }
+
+  taskUpdate(task: Task): Observable<Task> {
+    // Optimistically update the local state
+    const currentTasks = this.tasksSubject.value;
+    const updatedTasks = currentTasks.map(t => t.id === task.id ? {...task} : t);
+    this.updateLocalState(updatedTasks);
+
+    return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task).pipe(
+      tap(() => this.refreshTasks()),
+      catchError(error => {
+        // Revert the local state on error
+        this.updateLocalState(currentTasks);
+        throw error;
+      })
+    );
+  }
+
 
   getTaskById(id: number): Observable<Task> {
     return this.http.get<Task>(`${this.apiUrl}/${id}`);

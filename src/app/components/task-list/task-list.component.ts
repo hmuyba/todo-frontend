@@ -43,26 +43,77 @@ export class TaskListComponent implements OnInit, OnDestroy {
   constructor(private taskService: TaskService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    // Initialize the subscription
+    // Initial load and subscription setup
     this.tasksSubscription = this.taskService.tasks$.subscribe(
       (tasks: Task[]) => {
-        this.todoTasks = tasks.filter(task => 
-          this.normalizeStatus(task.status) === 'TO_DO'
-        );
-        this.inProgressTasks = tasks.filter(task => 
-          this.normalizeStatus(task.status) === 'IN_PROGRESS'
-        );
-        this.doneTasks = tasks.filter(task => 
-          this.normalizeStatus(task.status) === 'DONE'
-        );
-      },
-      error => {
-        console.error('Error in tasks subscription:', error);
+        this.updateTaskLists(tasks);
       }
     );
+    
+    // Get initial data
+    this.taskService.getTasks().subscribe();
+  }
 
-    // Initial load
-    this.taskService.refreshTasks();
+  private updateTaskLists(tasks: Task[]) {
+    this.todoTasks = tasks.filter(task => 
+      this.normalizeStatus(task.status) === 'TO_DO'
+    );
+    this.inProgressTasks = tasks.filter(task => 
+      this.normalizeStatus(task.status) === 'IN_PROGRESS'
+    );
+    this.doneTasks = tasks.filter(task => 
+      this.normalizeStatus(task.status) === 'DONE'
+    );
+  }
+
+  onDrop(event: CdkDragDrop<Task[]>): void {
+    if (!event.item.data) return;
+    
+    const task = { ...event.item.data } as Task;
+    const newStatus = this.normalizeStatus(event.container.id);
+    const previousStatus = this.normalizeStatus(task.status);
+    
+    if (previousStatus !== newStatus) {
+      // Update local state immediately for smooth UI
+      const updatedTask = { ...task, status: newStatus };
+      
+      // Optimistically update lists
+      this.updateLocalLists(task, newStatus);
+      
+      this.taskService.taskUpdate(updatedTask).subscribe({
+        error: (error) => {
+          console.error('Error updating task status:', error);
+          // State will be automatically reverted by the service
+        }
+      });
+    }
+  }
+
+  private updateLocalLists(task: Task, newStatus: string) {
+    // Remove from old list
+    const oldList = this.getTaskListByStatus(task.status);
+    const index = oldList.findIndex(t => t.id === task.id);
+    if (index !== -1) {
+      oldList.splice(index, 1);
+    }
+
+    // Add to new list
+    const newList = this.getTaskListByStatus(newStatus);
+    newList.push({ ...task, status: newStatus });
+  }
+
+  private getTaskListByStatus(status: string): Task[] {
+    const normalizedStatus = this.normalizeStatus(status);
+    switch (normalizedStatus) {
+      case 'TO_DO':
+        return this.todoTasks;
+      case 'IN_PROGRESS':
+        return this.inProgressTasks;
+      case 'DONE':
+        return this.doneTasks;
+      default:
+        return [];
+    }
   }
 
   ngOnDestroy(): void {
@@ -117,24 +168,5 @@ export class TaskListComponent implements OnInit, OnDestroy {
         this.taskService.refreshTasks();
       }
     });
-  }
-
-  onDrop(event: CdkDragDrop<Task[]>): void {
-    const task = event.item.data as Task;
-    const newStatus = this.normalizeStatus(event.container.id);
-    const previousStatus = this.normalizeStatus(task.status);
-    
-    if (previousStatus !== newStatus) {
-      const updatedTask = { ...task, status: newStatus };
-      this.taskService.updateTask(updatedTask).subscribe({
-        next: () => {
-          // The refresh is handled by the service
-        },
-        error: (error) => {
-          console.error('Error updating task status:', error);
-          this.taskService.refreshTasks(); // Refresh to revert changes on error
-        }
-      });
-    }
   }
 }
