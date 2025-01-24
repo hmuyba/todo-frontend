@@ -151,7 +151,7 @@
     .task-card mat-card-actions {
         padding: 5px;
     }
-    
+
     .create-task-button.mat-mdc-raised-button.mat-primary {
         margin-left: 5px;
     }
@@ -177,19 +177,22 @@
 .cdk-drag-preview {
     box-sizing: border-box;
     border-radius: 4px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-                0 8px 10px 1px rgba(0, 0, 0, 0.14),
-                0 3px 14px 2px rgba(0, 0, 0, 0.12);
-  }
-  
-  .cdk-drag-placeholder {
-    opacity: 0;
-  }
-  
-  .cdk-drag-animating {
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+}
+
+.cdk-drag-placeholder {
+    opacity: 0.5;
+}
+
+.cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-  
-  .task-list.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
+}
+
+.task-list.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
+}
+
+.task-card {
+    cursor: move;
+    user-select: none;
+}

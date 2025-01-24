@@ -8,7 +8,7 @@
       <div class="task-column">
         <h3>To Do</h3>
         <div cdkDropList id="TO_DO" class="task-list" [cdkDropListData]="todoTasks" (cdkDropListDropped)="onDrop($event)">
-          <div *ngFor="let task of todoTasks" cdkDrag [cdkDragData]="task" class="task-card">
+          <div *ngFor="let task of todoTasks;  trackBy: trackByTaskId" cdkDrag [cdkDragData]="task" class="task-card">
             <mat-card>
               <mat-card-header>
                 <mat-card-title>{{ task.title }}</mat-card-title>
@@ -29,7 +29,7 @@
       <div class="task-column">
         <h3>In Progress</h3>
         <div cdkDropList id="IN_PROGRESS" class="task-list" [cdkDropListData]="inProgressTasks" (cdkDropListDropped)="onDrop($event)">
-          <div *ngFor="let task of inProgressTasks" cdkDrag [cdkDragData]="task" class="task-card">
+          <div *ngFor="let task of inProgressTasks;  trackBy: trackByTaskId" cdkDrag [cdkDragData]="task" class="task-card">
             <mat-card>
               <mat-card-header>
                 <mat-card-title>{{ task.title }}</mat-card-title>
@@ -50,7 +50,7 @@
       <div class="task-column">
         <h3>Done</h3>
         <div cdkDropList id="DONE" class="task-list" [cdkDropListData]="doneTasks" (cdkDropListDropped)="onDrop($event)">
-          <div *ngFor="let task of doneTasks" cdkDrag [cdkDragData]="task" class="task-card">
+          <div *ngFor="let task of doneTasks;  trackBy: trackByTaskId" cdkDrag [cdkDragData]="task" class="task-card">
             <mat-card>
               <mat-card-header>
                 <mat-card-title>{{ task.title }}</mat-card-title>

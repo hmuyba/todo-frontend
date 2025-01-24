@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, NgZone  } from '@angular/core';
 import { MatDialogModule, MatDialog} from '@angular/material/dialog';
-import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
 import { TaskFormComponent } from '../task-form/task-form.component';
@@ -40,8 +40,12 @@ export class TaskListComponent implements OnInit, OnDestroy {
   doneTasks: Task[] = [];
   private tasksSubscription: Subscription | undefined;
 
-  constructor(private taskService: TaskService, private dialog: MatDialog) {}
+  constructor(private taskService: TaskService, private dialog: MatDialog, private ngZone: NgZone) {}
 
+  trackByTaskId(index: number, task: Task): number | undefined {
+    return task.id;
+  }
+  
   ngOnInit(): void {
     // Initial load and subscription setup
     this.tasksSubscription = this.taskService.tasks$.subscribe(
@@ -67,26 +71,39 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
 
   onDrop(event: CdkDragDrop<Task[]>): void {
-    if (!event.item.data) return;
+    // Prevent errors with null or undefined data
+    if (!event.item.data || !event.container) return;
+  
+    // Use NgZone to ensure proper change detection
+    this.ngZone.run(() => {
+      if (event.previousContainer === event.container) {
+        moveItemInArray(
+          event.container.data, 
+          event.previousIndex, 
+          event.currentIndex
+        );
+      } else {
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex
+        );
     
-    const task = { ...event.item.data } as Task;
-    const newStatus = this.normalizeStatus(event.container.id);
-    const previousStatus = this.normalizeStatus(task.status);
-    
-    if (previousStatus !== newStatus) {
-      // Update local state immediately for smooth UI
-      const updatedTask = { ...task, status: newStatus };
-      
-      // Optimistically update lists
-      this.updateLocalLists(task, newStatus);
-      
-      this.taskService.taskUpdate(updatedTask).subscribe({
-        error: (error) => {
-          console.error('Error updating task status:', error);
-          // State will be automatically reverted by the service
-        }
-      });
-    }
+        const task = event.item.data as Task;
+        const newStatus = this.normalizeStatus(event.container.id);
+        
+        const updatedTask = { ...task, status: newStatus };
+        
+        this.taskService.taskUpdate(updatedTask).subscribe({
+          error: (error) => {
+            console.error('Error updating task status:', error);
+            // More robust rollback
+            this.taskService.refreshTasks();
+          }
+        });
+      }
+    });
   }
 
   private updateLocalLists(task: Task, newStatus: string) {
