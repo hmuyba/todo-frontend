@@ -8,7 +8,7 @@ import { Task } from '../models/task.model';
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl = 'https://mysql-todo-7693b48fef7f.herokuapp.com/api/tasks';
+  private apiUrl = 'https://todo-backend-production-85e8.up.railway.app/api/tasks';
   private tasksSubject = new BehaviorSubject<Task[]>([]);
   tasks$ = this.tasksSubject.asObservable();
 
